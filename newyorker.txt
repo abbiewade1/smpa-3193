@@ -1,0 +1,5 @@
+1)	What percentage of the characters were non-white? 5.3%
+2)	What percentage of the characters were women? 29.4%
+3)	Which cartoonist had the highest percentage of non-white characters? Haefeli
+4)	What percentage of the characters were both non-white and female? 1.4%
+5)	Write a paragraph that summarizes your key findings. (you can use the results from questions above and/or do your own additional analysis) The key findings here are that, while far less than half of the characters were women, much fewer were non-white. From this analysis, the group that was the least represented were non-white female characters.
