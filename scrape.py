@@ -1,34 +1,37 @@
 import csv
 import requests
 from BeautifulSoup import BeautifulSoup
+# encoding=utf8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
-batch_size = 2
-urllist = ["https://columbian.gwu.edu/2010-2011", "https://columbian.gwu.edu/2015-2016"]
-url_chunks = [urllist[x:x+2] for x in xrange(0, len(urllist), batch_size)]
-
-def scrape_url(url):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, "html.parser")
-    h1 = soup.find("h1", class_= "class-headline")
-    return (h1.get_text())
-
-def scrape_batch(url_chunk):
-    chunk_resp = []
-    for url in url_chunk:
-        chunk_resp.append(scrape_url(url))
-    return chunk_resp
-
-for url_chunk in url_chunks:
-    print scrape_batch(url_chunk)
-
+months = ['04', '03', '02', '01']
 list_of_rows = []
-for row in table.findAll('tr')[1:-1]:
-    list_of_cells = []
-    for cell in row.findAll('td'):
-    	list_of_cells.append(cell.text)
-    list_of_rows.append(list_of_cells)
 
-outfile = open("college.csv", "wb")
+for month in months:
+	print month
+	response = requests.get("http://m.nationals.mlb.com/roster/transactions/2017/" + month)
+	html = response.content
+
+	soup = BeautifulSoup(html)
+	table = soup.find('table')
+
+	for row in table.findAll('tr'):
+    		list_of_cells = []
+    	for cell in row.findAll('td'):
+    		list_of_cells.append(cell.text.encode('utf-8'))
+    	list_of_rows.append(list_of_cells)
+    	
+	soup = BeautifulSoup(html)
+	links = soup.find_all('a')
+
+	for tag in links:
+		link = tag.get('href', None)
+		if link is not None:
+			print link
+
+outfile = open("transactions.csv", "wb")
 writer = csv.writer(outfile)
-writer.writerow(["department", "faculty", "sponsor", "title", "year"])
+writer.writerow(["date", "url", "text"])
 writer.writerow(list_of_rows)
